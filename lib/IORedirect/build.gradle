@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+apply from: "$rootDir/ext-android.gradle"
+android {
+
+    defaultConfig {
+        ndk {
+            moduleName "iohook"
+            stl "stlport_static"
+            ldLibs "log"
+            abiFilters "armeabi", "x86"
+        }
+    }
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}

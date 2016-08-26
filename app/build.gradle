@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+apply from: "$rootDir/ext-android.gradle"
+
+def currentTime()
+{
+    return( new Date().format( "yyyyMMdd", TimeZone.getTimeZone( "UTC" ) ) )
+}
+
+android {
+    defaultConfig{
+        applicationId "com.dst.droidutil"
+        archivesBaseName = "${project.appName}_${currentTime()}"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile baseDependencies.support_design
+    compile baseDependencies.support_v13
+
+    compile project(':lib:DroidLib')
+    compile project(':lib:IORedirect')
+}
