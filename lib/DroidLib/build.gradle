@@ -1,2 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/ext-android.gradle"
+
+android {
+    buildToolsVersion '25.0.0'
+}

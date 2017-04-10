@@ -10,6 +10,7 @@ android {
             abiFilters "armeabi", "x86"
         }
     }
+    buildToolsVersion '25.0.0'
 }
 
 

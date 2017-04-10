@@ -1,9 +1,12 @@
 package com.dst.droidutil;
 
+import com.dst.droidlib.file.ProcFileReader;
 import com.dst.droidlib.reflect.Reflect;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Process;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +15,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,9 +37,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "hook NotificationManagerService", Toast.LENGTH_SHORT).show();
+                    }
+                }, 3 * 1000);
             }
         });
 
+        ProcFileReader reader = null;
+        try {
+            reader = new ProcFileReader(new FileInputStream("/proc/" + Process.myPid() + "/maps"));
+            while (reader.hasMoreData()){
+                String str = reader.nextString();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         testReflect();
     }
 

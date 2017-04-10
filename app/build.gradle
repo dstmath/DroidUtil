@@ -17,13 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '25.0.0'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile baseDependencies.support_design
-    compile baseDependencies.support_v13
+//    compile baseDependencies.support_v13
 
     compile project(':lib:DroidLib')
     compile project(':lib:IORedirect')
