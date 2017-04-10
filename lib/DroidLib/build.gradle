@@ -3,4 +3,12 @@ apply from: "$rootDir/ext-android.gradle"
 
 android {
     buildToolsVersion '25.0.0'
+
+    defaultConfig{
+        versionCode 1
+        versionName "1.0.1"
+    }
 }
+
+apply from: "$rootDir/bintrayUpload.gradle"
+//apply from: "https://raw.githubusercontent.com/xiaopansky/android-library-publish-to-jcenter/master/bintrayUpload.gradle"
