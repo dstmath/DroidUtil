@@ -1,7 +1,5 @@
 package com.dst.droidlib.hook;
 
-import com.dst.droidlib.reflect.Reflect;
-
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.IBinder;
@@ -12,7 +10,6 @@ import android.util.Log;
 
 import java.io.FileDescriptor;
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * @author Lody
@@ -22,10 +19,6 @@ public class BinderInvocationStub extends MethodInvocationStub<IInterface> imple
 
     private static final String TAG = BinderInvocationStub.class.getSimpleName();
     private IBinder mBaseBinder;
-
-    /*public BinderInvocationStub(RefStaticMethod<IInterface> asInterfaceMethod, IBinder binder) {
-        this(asInterface(asInterfaceMethod, binder));
-    }*/
 
     public BinderInvocationStub(Class<?> stubClass, IBinder binder) {
         this(asInterface(stubClass, binder));
@@ -37,14 +30,6 @@ public class BinderInvocationStub extends MethodInvocationStub<IInterface> imple
         mBaseBinder = getBaseInterface() != null ? getBaseInterface().asBinder() : null;
         addMethodProxy(new AsBinder());
     }
-
-    /*private static IInterface asInterface(RefStaticMethod<IInterface> asInterfaceMethod, IBinder binder) {
-        if (asInterfaceMethod == null || binder == null) {
-            return null;
-        }
-        return Reflect.on(binder).call("asInterface", binder).get();
-        return asInterfaceMethod.call(binder);
-    }*/
 
     private static IInterface asInterface(Class<?> stubClass, IBinder binder) {
         try {
@@ -61,9 +46,7 @@ public class BinderInvocationStub extends MethodInvocationStub<IInterface> imple
 
     public void replaceService(String name) {
         if (mBaseBinder != null) {
-//            ServiceManager.sCache.get().put(name, this);
-            Map<String, IBinder> sCache = Reflect.on("android.os.ServiceManager").field("sCache").get();
-            sCache.put(name, this);
+            HookHelper.getsCache().put(name, this);
         }
     }
 

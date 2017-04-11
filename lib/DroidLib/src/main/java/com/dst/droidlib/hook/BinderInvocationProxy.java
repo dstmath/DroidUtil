@@ -1,8 +1,6 @@
 package com.dst.droidlib.hook;
 
 
-import com.dst.droidlib.reflect.Reflect;
-
 import android.os.IBinder;
 import android.os.IInterface;
 
@@ -19,12 +17,11 @@ public abstract class BinderInvocationProxy extends MethodInvocationProxy<Binder
 		this(new BinderInvocationStub(stub), serviceName);
 	}
 
-	/*public BinderInvocationProxy(RefStaticMethod<IInterface> asInterfaceMethod, String serviceName) {
-		this(new BinderInvocationStub(asInterfaceMethod, ServiceManager.getService.call(serviceName)), serviceName);
-	}*/
-
+	public BinderInvocationProxy(String stubClass, String serviceName){
+		this(HookHelper.load(stubClass), serviceName);
+	}
 	public BinderInvocationProxy(Class<?> stubClass, String serviceName) {
-		this(new BinderInvocationStub(stubClass, (IBinder) Reflect.on("android.os.ServiceManager").call("getService", serviceName).get()), serviceName);
+		this(new BinderInvocationStub(stubClass, HookHelper.getService(serviceName)), serviceName);
 	}
 
 	public BinderInvocationProxy(BinderInvocationStub hookDelegate, String serviceName) {
@@ -39,8 +36,7 @@ public abstract class BinderInvocationProxy extends MethodInvocationProxy<Binder
 
 	@Override
 	public boolean isEnvBad() {
-		IBinder binder = Reflect.on("android.os.ServiceManager").call("getService", mServiceName).get();
-//		IBinder binder = ServiceManager.getService.call(mServiceName);
+		IBinder binder = HookHelper.getService(mServiceName);
 		return binder != null && getInvocationStub() != binder;
 	}
 }

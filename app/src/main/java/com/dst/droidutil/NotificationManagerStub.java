@@ -4,14 +4,15 @@ package com.dst.droidutil;
 import com.dst.droidlib.hook.BinderInvocationProxy;
 import com.dst.droidlib.hook.MethodProxy;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.lang.reflect.Method;
 
 public class NotificationManagerStub extends BinderInvocationProxy {
 
-    public NotificationManagerStub(Class<?> stubClass, String serviceName) throws ClassNotFoundException {
-        super(stubClass, serviceName);
+    public NotificationManagerStub() {
+        super("android.app.INotificationManager$Stub", Context.NOTIFICATION_SERVICE);
     }
 
     @Override
