@@ -4,6 +4,7 @@ import com.dst.droidlib.file.ProcFileReader;
 import com.dst.droidlib.reflect.Reflect;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -31,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        try {
+            String meta = getPackageManager().getApplicationInfo(getPackageName(), 0).metaData.getString("com.cmcc");
+            Log.e("ggg", "ggg meta = " + meta);
+
+            boolean aoi = getPackageManager().getApplicationInfo(getPackageName(), 128).metaData.getBoolean("aoe_log_disable");
+            Log.e("ggg", "ggg aoi log  = " + aoi);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
