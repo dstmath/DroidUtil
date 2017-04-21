@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 /**
- * {@hide}
+ * android 6.0
  *
  * <p>The state machine defined here is a hierarchical state machine which processes messages
  * and can have states arranged hierarchically.</p>
