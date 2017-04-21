@@ -91,6 +91,7 @@ public class HookHelper {
         int deep = 0;
         while (context instanceof ContextWrapper) {
             context = ((ContextWrapper) context).getBaseContext();
+            Log.e("ggg", "ggg deep = " + deep + ", context = " + context);
             deep++;
             if (deep >= 10) {
                 return;

@@ -1,7 +1,13 @@
 package com.dst.droidutil;
 
+import com.dst.droidlib.file.FastXmlSerializer;
 import com.dst.droidlib.file.ProcFileReader;
+import com.dst.droidlib.file.XmlUtils;
+import com.dst.droidlib.hook.HookHelper;
 import com.dst.droidlib.reflect.Reflect;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -13,12 +19,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        HookHelper.fixContext(this);
         try {
             String meta = getPackageManager().getApplicationInfo(getPackageName(), 0).metaData.getString("com.cmcc");
             Log.e("ggg", "ggg meta = " + meta);
@@ -60,13 +70,21 @@ public class MainActivity extends AppCompatActivity {
         ProcFileReader reader = null;
         try {
             reader = new ProcFileReader(new FileInputStream("/proc/" + Process.myPid() + "/maps"));
-            while (reader.hasMoreData()){
+            while (reader.hasMoreData()) {
                 String str = reader.nextString();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         testReflect();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                testXmlWrite();
+                testXmlRead();
+            }
+        }).start();
     }
 
     @Override
@@ -98,6 +116,51 @@ public class MainActivity extends AppCompatActivity {
             Log.e("ggg", "ggg " + key);
             Reflect reflect = map.get(key);
             Log.e("ggg", "ggg " + reflect.get());
+        }
+    }
+
+    private void testXmlWrite() {
+        try {
+            FileOutputStream fos = new FileOutputStream("/sdcard/test.xml");
+            FastXmlSerializer serializer = new FastXmlSerializer();
+            serializer.setOutput(fos, "utf-8");
+            serializer.startDocument(null, true);
+            serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+            serializer.startTag(null, "settings");
+
+            serializer.startTag(null, "white_list");
+            serializer.attribute(null, "name", "qq");
+            serializer.attribute(null, "package", "com.tencent.mobileqq");
+            serializer.endTag(null, "white_list");
+
+            serializer.endTag(null, "settings");
+
+            serializer.endDocument();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testXmlRead() {
+        try {
+            FileInputStream fis = new FileInputStream("/sdcard/test.xml");
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setInput(fis, null);
+
+            XmlUtils.nextElement(parser);
+            while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
+                Log.e("ggg", "ggg " + parser.getName() + ", " + parser.getAttributeCount());
+                XmlUtils.nextElement(parser);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
         }
     }
 }
