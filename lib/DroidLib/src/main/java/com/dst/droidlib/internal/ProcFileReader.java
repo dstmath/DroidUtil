@@ -1,4 +1,4 @@
-package com.dst.droidlib.file;
+package com.dst.droidlib.internal;
 
 import java.io.Closeable;
 import java.io.IOException;

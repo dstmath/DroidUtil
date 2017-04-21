@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dst.droidlib.file;
+package com.dst.droidlib.internal;
 
 import org.xmlpull.v1.XmlSerializer;
 

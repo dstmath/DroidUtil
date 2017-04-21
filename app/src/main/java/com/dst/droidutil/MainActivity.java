@@ -1,8 +1,8 @@
 package com.dst.droidutil;
 
-import com.dst.droidlib.file.FastXmlSerializer;
-import com.dst.droidlib.file.ProcFileReader;
-import com.dst.droidlib.file.XmlUtils;
+import com.dst.droidlib.internal.FastXmlSerializer;
+import com.dst.droidlib.internal.ProcFileReader;
+import com.dst.droidlib.internal.XmlUtils;
 import com.dst.droidlib.hook.HookHelper;
 import com.dst.droidlib.reflect.Reflect;
 
