@@ -1,15 +1,17 @@
 apply plugin: 'com.android.application'
 apply from: "$rootDir/ext-android.gradle"
 
-def currentTime()
-{
-    return( new Date().format( "yyyyMMdd", TimeZone.getTimeZone( "UTC" ) ) )
+def currentTime() {
+    return (new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC")))
 }
 
 android {
-    defaultConfig{
+    defaultConfig {
         applicationId "com.dst.droidutil"
         archivesBaseName = "${project.appName}_${currentTime()}"
+
+//        multiDexKeepFile file('multiDexKeep.txt')
+//        multiDexKeepProguard file('multiDexKeep.pro')
     }
     buildTypes {
         release {
